@@ -55,6 +55,7 @@ return array(
     'service_manager' => array(
         'factories' => array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
+            'ServiceYQL' => '\MMYQL\Service\ServiceYQLFactory',
         ),
     ),
     'translator' => array(
