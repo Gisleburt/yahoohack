@@ -1,7 +1,24 @@
-/**
- * Created with JetBrains PhpStorm.
- * User: Daniel
- * Date: 27/04/13
- * Time: 15:11
- * To change this template use File | Settings | File Templates.
- */
+var fakeResults = [
+
+	{
+		name: "First result",
+		lat: "51.5077286",
+		lon: "-0.1279688"
+	},
+	{
+		name: "Second result",
+		lat: "51.5078286",
+		lon: "-0.1279688"
+	},
+	{
+		name: "First result",
+		lat: "51.5077286",
+		lon: "-0.1275688"
+	},
+	{
+		name: "First result",
+		lat: "51.5073286",
+		lon: "-0.1273688"
+	},
+
+];
