@@ -8,13 +8,14 @@ MapHack = function(config) {
 
 	this.mapName = 'map';
 	this.queryName = 'query';
+	this.modules = null;
 
 	this._map = null;
 	this._searchUrl = '/search';
 
-	this._defaultLon = -0.0;
-	this._defaultLat = 51.477222;
-	this._defaultZoom = 16;
+	this.longitude = -0.0;
+	this.latitude = 51.477222;
+	this.zoom = 10;
 
 	this.setConfig(config);
 
@@ -40,7 +41,11 @@ MapHack.prototype.createMap = function () {
 	this._map = new OpenLayers.Map(this.mapName);
 	this._map.addLayer(new OpenLayers.Layer.OSM());
 
-	this.setLocation(this._defaultLon, this._defaultLat, this._defaultZoom)
+	this.setLocation({
+		longitude: this.longitude,
+		latitude: this.latitude,
+		zoom: this.zoom
+	});
 /**/
 }
 
@@ -62,7 +67,7 @@ MapHack.prototype.searchFor = function(query) {
 	var queryElement = document.getElementById(this.queryName);
 	if(query && query != queryElement.value)
 		queryElement.value = query;
-	this.sendQuery(query, 'location');
+	this.getLocation(query, 'location');
 }
 
 /**
@@ -70,31 +75,53 @@ MapHack.prototype.searchFor = function(query) {
  * @param query
  * @param module
  */
-MapHack.prototype.sendQuery = function(query, module) {
+MapHack.prototype.getLocation = function(query, module) {
 	var url = this._searchUrl+"?q="+query+"&m="+module;
-	$.ajax(url, {context:this}).done(this.parsePosition);
+	$.ajax(url, {context:this}).done(this.setLocationAndQueryModules);
 }
 
-MapHack.prototype.parsePosition = function(response) {
-	if(response.hasOwnProperty('result') && response.result.hasOwnProperty('coordinates')) {
-		console.log(response.result)
-		this.setLocation(
-			response.result.coordinates.longitude,
-			response.result.coordinates.latitude,
-			this.radiusToZoom(response.result.coordinates.radius)
-		);
-		this.radiusToZoom(response.result.coordinates.radius);
+MapHack.prototype.queryModule = function(module) {
+	var url = this._searchUrl+"?lat="+this.latitude+"&lon="+this.longitude+"&m="+module;
+}
+
+MapHack.prototype.setLocationAndQueryModules = function(locationData) {
+	var location = this.parsePosition(locationData);
+	if(location) {
+		this.setLocation(location);
+		this.modules;
 	}
 }
 
-MapHack.prototype.setLocation = function(lon, lat, zoom) {
-	var lonLat = new OpenLayers.LonLat( lon , lat )
+MapHack.prototype.queryModules = function() {
+	for(i in this.modules) {
+
+	}
+}
+
+MapHack.prototype.parsePosition = function(response) {
+	if(response.hasOwnProperty('result')
+			&& response.result.hasOwnProperty('coordinates')
+			&& response.result.coordinates.longitude) {
+		return {
+			longitude: response.result.coordinates.longitude,
+			latitude: response.result.coordinates.latitude,
+			zoom: this.radiusToZoom(response.result.coordinates.radius)
+		};
+	}
+}
+
+MapHack.prototype.setLocation = function(location) {
+	this.longitude = location.longitude;
+	this.latitude  = location.latitude;
+	this.zoom      = location.zoom;
+
+	var lonLat = new OpenLayers.LonLat( this.longitude , this.latitude )
 		.transform(
 			new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
 			this._map.getProjectionObject() // to Spherical Mercator Projection
 		);
 
-	this._map.setCenter (lonLat, zoom);
+	this._map.setCenter (lonLat, this.zoom);
 }
 
 MapHack.prototype.radiusToZoom = function(radius) {

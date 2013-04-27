@@ -2,37 +2,52 @@
 
 {% block content %}
 
-        <form id="queryBox">
-            <input id="query" type="text" name="query" placeholder="Search" /><button type="submit" onclick='mapHack.search(); return false;'>GO</button>
-        </form>
+	<form id="queryBox">
+		<input id="query" type="text" name="query" placeholder="Search" /><button type="submit" onclick='mapHack.search(); return false;'>GO</button>
+	</form>
 
     <div id="div_spinner">
         <img src="/img/ajax-loader.gif" alt="" />
     </div>
 
-	<div id="resultsBox">
-		Results
-	</div>
+	<ul id="resultsBox">
+
+	</ul>
 
 	<div id="mapBox"></div>
 
-
-
-
-
 	<script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
 	<script type="text/javascript" src="/js/MapHack.js"></script>
+	<script type="text/javascript" src="/js/MapHackModule.js"></script>
+	<script type="text/javascript" src="/js/MapHackUi.js"></script>
 	<script type="text/javascript" src="/js/history.js"></script>
 	<script type="text/javascript" src="/js/fakeResults.js"></script>
 	<script type="text/javascript">
+
+		var mapHackModules = [
+			new MapHackModule({
+				name: 'Flickr',
+				icon: 'flickr_30.jpg'
+			})
+		]
+
 		var mapHack = new MapHack({
 			mapName: "mapBox",
-			queryName: "query"
+			queryName: "query",
+			modules: mapHackModules
 		});
 		mapHack.createMap();
 
-        $(document).ready(function () {
+		var mapHackUi = new MapHackUi({
+			mapName: 'mapBox',
+			queryName: 'queryBox',
+			resultsName: 'resultsBox',
+			mapHack: mapHack
+		});
 
+		mapHackUi.setModules();
+
+        $(document).ready(function () {
             $('#div_spinner').hide();
 
             $.ajaxSetup({
@@ -49,6 +64,7 @@
                 $('#div_spinner').hide();
             });
         });
+
 	</script>
 
 
