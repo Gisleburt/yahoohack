@@ -2,7 +2,6 @@
 function createMap(map, mapElementName) {
 	map = new OpenLayers.Map(mapElementName);
 	map.addLayer(new OpenLayers.Layer.OSM());
-	console.log(map);
 
 	var lonLat = new OpenLayers.LonLat( -0.1279688 ,51.5077286 )
 		.transform(
@@ -22,4 +21,14 @@ function createMap(map, mapElementName) {
 
 function overlayElement(map, element) {
 	map.addLayer()
+}
+
+function search(element) {
+	var query = element.query.value;
+	setHistory("?q="+query);
+}
+
+function setHistory(location) {
+	console.log(location);
+	history.pushState(null, null, location)
 }
