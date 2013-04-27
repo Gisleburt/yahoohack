@@ -3,8 +3,8 @@
 {% block content %}
 
 	<div id="queryBox">
-		<form id="query">
-			<input type="text" name="query" placeholder="Search" /><button type="submit" onclick='search(form); return false;'>GO</button>
+		<form>
+			<input id="query" type="text" name="query" placeholder="Search" /><button type="submit" onclick='mapHack.search(); return false;'>GO</button>
 		</form>
 	</div>
 
@@ -17,10 +17,14 @@
 
 	<script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
 	<script type="text/javascript" src="/js/map.js"></script>
+	<script type="text/javascript" src="/js/history.js"></script>
 	<script type="text/javascript" src="/js/fakeResults.js"></script>
 	<script type="text/javascript">
-		var map = null;
-		createMap(map, "mapBox");
+		var mapHack = new MapHack({
+			mapName: "mapBox",
+			queryName: "query"
+		});
+		mapHack.createMap();
 	</script>
 
 
