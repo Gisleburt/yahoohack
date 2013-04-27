@@ -3,8 +3,8 @@
 return array(
 
     'mmyql' => array(
-		'flick_key' => '',
-		'yql_base_url' = 'http://query.yahooapis.com/v1/public/yql',
+		'flickr_key' => '',
+		'yql_base_url' => 'http://query.yahooapis.com/v1/public/yql',
 	)
 
 );

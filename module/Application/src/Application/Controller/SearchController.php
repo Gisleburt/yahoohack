@@ -8,6 +8,7 @@
 namespace Application\Controller;
 
 
+use Application\Model\Search;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 
@@ -16,34 +17,47 @@ class SearchController extends AbstractActionController {
     public function searchAction(){
 
         $view = new JsonModel();
-        $serviceYQL = $this->getServiceLocator()->get('serviceYQL');
 
 
-        $query = $this->params()->fromQuery('q');
         $module = $this->params()->fromQuery('m');
 
-        if(!$query || !$module){
-            $view->setVariable('error','missing parameter');
+        if(!$module){
+            $view->setVariable('error','missing parameter module');
             return $view;
         }
 
+        $search = new Search($this->getServiceLocator());
+
         switch($module){
             case 'location':
-                $select = "latitude, longitude, radius";
-                $from = "geo.placefinder";
-                $where = "text=\"{$query}\"";
+                $query = $this->params()->fromQuery('q');
+                if(!$query){
+                    $view->setVariable('error','missing parameter q');
+                    return $view;
+                }
 
-                $response = $serviceYQL->executeQuery($select, $from, $where);
-                $responseArray = json_decode($response);
-                if(isset($responseArray->query->results->Result)){
-                    $result = $responseArray->query->results->Result;
-
-                    $resultArray = array('coordinates' => array('latitude' => $result->latitude, 'longitude' => $result->longitude, 'radius' => $result->radius));
-                    $view->setVariable('result',$resultArray);
+                if($resultArray = $search->searchLocation($query)){
+                        $view->setVariable('result',$resultArray);
                     }
                 else{
                     $view->setVariable('error','no data found');
                 }
+            break;
+            case 'flickr':
+                $lat = $this->params()->fromQuery('lat');
+                $lon = $this->params()->fromQuery('lon');
+                if(!$lat || !$lon){
+                    $view->setVariable('error','missing parameter lat or lon');
+                    return $view;
+                }
+
+                if($resultArray = $search->searchFlickr($lat, $lon)){
+                    $view->setVariable('result',$resultArray);
+                }
+                else{
+                    $view->setVariable('error','no data found');
+                }
+
             break;
             default:
                 $view->setVariable('error','invalid module');
