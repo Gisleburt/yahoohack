@@ -29,7 +29,7 @@ class SearchController extends AbstractActionController {
 
         switch($module){
             case 'location':
-                $select = "latitude, longitude";
+                $select = "latitude, longitude, radius";
                 $from = "geo.placefinder";
                 $where = "text=\"{$query}\"";
 
@@ -38,7 +38,7 @@ class SearchController extends AbstractActionController {
                 if(isset($responseArray->query->results->Result)){
                     $result = $responseArray->query->results->Result;
 
-                    $resultArray = array('coordinates' => array('latitude' => $result->latitude, 'longitude' => $result->longitude));
+                    $resultArray = array('coordinates' => array('latitude' => $result->latitude, 'longitude' => $result->longitude, 'radius' => $result->radius));
                     $view->setVariable('result',$resultArray);
                     }
                 else{
