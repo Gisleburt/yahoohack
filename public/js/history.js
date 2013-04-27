@@ -1,5 +1,8 @@
 window.addEventListener("popstate", function(e) {
-	var query = decodeURIComponent(getUrlVars().q);
+	var query = null;
+	var queryVars = getUrlVars();
+	if(queryVars.hasOwnProperty('q'))
+		query = decodeURIComponent(queryVars.q);
 	if(query && mapHack)
 		mapHack.searchFor(query);
 });
