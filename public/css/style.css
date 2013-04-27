@@ -1,6 +1,8 @@
 body {
-    padding-top: 60px;
-    padding-bottom: 40px;
+    padding: 0;
+	margin: 0 !important;
+	height: 100%;
+	width: 100%;
 }
 
 .zf-green {
