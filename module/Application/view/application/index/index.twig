@@ -6,26 +6,43 @@
 		<input id="query" type="text" name="query" placeholder="Search" /><button type="submit" onclick='mapHack.search(); return false;'>GO</button>
 	</form>
 
-	<div id="resultsBox">
-		Results
-	</div>
+	<ul id="resultsBox">
+
+	</ul>
 
 	<div id="mapBox"></div>
 
-
-
-
-
 	<script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
 	<script type="text/javascript" src="/js/MapHack.js"></script>
+	<script type="text/javascript" src="/js/MapHackModule.js"></script>
+	<script type="text/javascript" src="/js/MapHackUi.js"></script>
 	<script type="text/javascript" src="/js/history.js"></script>
 	<script type="text/javascript" src="/js/fakeResults.js"></script>
 	<script type="text/javascript">
+
+		var mapHackModules = [
+			new MapHackModule({
+				name: 'Flickr',
+				icon: 'flickr_30.jpg'
+			})
+		]
+
 		var mapHack = new MapHack({
 			mapName: "mapBox",
-			queryName: "query"
+			queryName: "query",
+			modules: mapHackModules
 		});
 		mapHack.createMap();
+
+		var mapHackUi = new MapHackUi({
+			mapName: 'mapBox',
+			queryName: 'queryBox',
+			resultsName: 'resultsBox',
+			mapHack: mapHack
+		});
+
+		mapHackUi.setModules();
+
 	</script>
 
 

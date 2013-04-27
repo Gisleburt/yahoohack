@@ -6,7 +6,8 @@
 
 MapHackModule = function(config) {
 
-	this.name = 'location';
+	this.name = null;
+	this.icon = null
 	this._numResults = 0;
 	this._results = [];
 	this.setConfig(config);
@@ -19,8 +20,7 @@ MapHackModule = function(config) {
  */
 MapHackModule.prototype.setConfig = function(config) {
 	for(var property in config) {
-		if(this.hasOwnProperty(property) && property..charAt(0) != '_')
+		if(this.hasOwnProperty(property) && property.charAt(0) != '_')
 			this[property] = config[property];
 	}
 }
-
