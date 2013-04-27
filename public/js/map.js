@@ -1,5 +1,5 @@
-var map;
-function createMap(mapElementName) {
+
+function createMap(map, mapElementName) {
 	map = new OpenLayers.Map(mapElementName);
 	map.addLayer(new OpenLayers.Layer.OSM());
 	console.log(map);
@@ -18,4 +18,8 @@ function createMap(mapElementName) {
 	//markers.addMarker(new OpenLayers.Marker(lonLat));
 
 	map.setCenter (lonLat, zoom);
+}
+
+function overlayElement(map, element) {
+	map.addLayer()
 }

@@ -37,3 +37,65 @@ div.container a.brand {
     margin-left: 0;
     padding: 8px 20px 12px 40px;
 }
+
+/*********\
+ * RESET *
+\*********/
+
+#queryBox,
+#mapBox,
+#resultsBox,
+form,
+input,
+button, {
+	margin: 0 !important;
+	padding: 0 !important;
+	border-width: 0 !important;
+}
+
+
+/**********\
+ * LAYOUT *
+\**********/
+
+#queryBox {
+	width:100%;
+	height: 7%;
+}
+
+#mapBox {
+	float: left;
+	height: 93%;
+	width:80%;
+}
+
+#resultsBox {
+	float: right;
+	width: 20%;
+	height: 93%;
+}
+
+/********\
+ * FORM *
+\********/
+
+#queryBox input,
+#queryBox button {
+	border-bottom: 1px solid grey;
+	height: 100%;
+	font-weight: bold;
+	color: darkgray;
+}
+
+
+#queryBox input {
+	padding-left: 2%;
+	width: 95%;
+}
+
+#queryBox button {
+	border-left: 1px solid grey;
+	width: 5%;
+	background-color: white;
+	text-align: center;
+}

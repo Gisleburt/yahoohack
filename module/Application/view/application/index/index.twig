@@ -2,17 +2,24 @@
 
 {% block content %}
 
-	<form id="query">
-		<input type="text" name="query" placeholder="Search" />
-		<input type="submit">
-	</form>
+	<div id="queryBox">
+		<form>
+			<input type="text" name="query" placeholder="Search" /><button type="submit">GO</button>
+		</form>
+	</div>
 
-    <div id="mapdiv"></div>
+	<div id="mapBox"></div>
+
+	<div id="resultsBox">
+		Results
+	</div>
+
 
 	<script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
 	<script type="text/javascript" src="/js/map.js"></script>
 	<script type="text/javascript">
-		createMap("mapdiv");
+		var map = null;
+		createMap(map, "mapBox");
 	</script>
 
 {% endblock content %}
