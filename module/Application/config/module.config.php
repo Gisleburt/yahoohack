@@ -50,12 +50,26 @@ return array(
                     ),
                 ),
             ),
+            'search' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/search[/:action]',
+                    'constraints' => array(
+                        'controller' => 'Search',
+                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Search',
+                        'action'     => 'search',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
         'factories' => array(
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
-            'ServiceYQL' => '\MMYQL\Service\ServiceYQLFactory',
+            'serviceYQL' => '\MMYQL\Service\ServiceYQLFactory',
         ),
     ),
     'translator' => array(
@@ -70,23 +84,26 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController'
+            'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Controller\Search' => 'Application\Controller\SearchController'
         ),
     ),
     'view_manager' => array(
-        'display_not_found_reason' => true,
-        'display_exceptions'       => true,
-        'doctype'                  => 'HTML5',
-        'not_found_template'       => 'error/404',
-        'exception_template'       => 'error/index',
-        'template_map' => array(
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
-            'error/404'               => __DIR__ . '/../view/error/404.phtml',
-            'error/index'             => __DIR__ . '/../view/error/index.phtml',
-        ),
         'template_path_stack' => array(
-            __DIR__ . '/../view',
+            'application' => __DIR__ . '/../view',
         ),
-    ),
+        'template_map' => array(
+            'layout/layout' => __DIR__ . '/../view/layout/layout.twig',
+            'error' => __DIR__ . '/../view/error/index.twig',
+            '403' => __DIR__ . '/../view/error/403.twig',
+            '404' => __DIR__ . '/../view/error/404.twig',
+        ),
+        'display_not_found_reason' => true,
+        'display_exceptions' => true,
+        'doctype' => 'HTML5',
+        'strategies' => array(
+            'ViewJsonStrategy',
+            'ZfcTwigViewStrategy',
+        ),
+     ),
 );
