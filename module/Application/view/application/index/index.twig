@@ -2,17 +2,18 @@
 
 {% block content %}
 
-	<div id="queryBox">
-		<form>
-			<input id="query" type="text" name="query" placeholder="Search" /><button type="submit" onclick='mapHack.search(); return false;'>GO</button>
-		</form>
-	</div>
-
-	<div id="mapBox"></div>
+	<form id="queryBox">
+		<input id="query" type="text" name="query" placeholder="Search" /><button type="submit" onclick='mapHack.search(); return false;'>GO</button>
+	</form>
 
 	<div id="resultsBox">
 		Results
 	</div>
+
+	<div id="mapBox"></div>
+
+
+
 
 
 	<script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
