@@ -116,3 +116,9 @@ button, {
 	float: right;
 	text-align: center;
 }
+#div_spinner{
+    position: absolute;
+    left: 55px;
+    top:25px;
+    z-index: 100000;
+}

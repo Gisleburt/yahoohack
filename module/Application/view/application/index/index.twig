@@ -2,9 +2,13 @@
 
 {% block content %}
 
-	<form id="queryBox">
-		<input id="query" type="text" name="query" placeholder="Search" /><button type="submit" onclick='mapHack.search(); return false;'>GO</button>
-	</form>
+        <form id="queryBox">
+            <input id="query" type="text" name="query" placeholder="Search" /><button type="submit" onclick='mapHack.search(); return false;'>GO</button>
+        </form>
+
+    <div id="div_spinner">
+        <img src="/img/ajax-loader.gif" alt="" />
+    </div>
 
 	<div id="resultsBox">
 		Results
@@ -26,6 +30,25 @@
 			queryName: "query"
 		});
 		mapHack.createMap();
+
+        $(document).ready(function () {
+
+            $('#div_spinner').hide();
+
+            $.ajaxSetup({
+                error:function (xhr) {
+                    alert('Sorry, there was problem, please reload the page.');
+                }
+            });
+
+            $(document).ajaxStart(function() {
+                $('#div_spinner').show();
+            });
+
+            $(document).ajaxStop(function() {
+                $('#div_spinner').hide();
+            });
+        });
 	</script>
 
 
