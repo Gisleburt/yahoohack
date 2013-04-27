@@ -32,15 +32,24 @@ class SearchController extends AbstractActionController {
                 $select = "latitude, longitude";
                 $from = "geo.placefinder";
                 $where = "text=\"{$query}\"";
+
+                $response = $serviceYQL->executeQuery($select, $from, $where);
+                $responseArray = json_decode($response);
+                if(isset($responseArray->query->results->Result)){
+                    $result = $responseArray->query->results->Result;
+
+                    $resultArray = array('coordinates' => array('latitude' => $result->latitude, 'longitude' => $result->longitude));
+                    $view->setVariable('result',$resultArray);
+                    }
+                else{
+                    $view->setVariable('error','no data found');
+                }
             break;
             default:
                 $view->setVariable('error','invalid module');
                 return $view;
             break;
         }
-
-        $response = $serviceYQL->executeQuery($select , $from, $where);
-        $view->setVariable('response',$response);
 
         return $view;
     }
