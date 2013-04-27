@@ -17,6 +17,8 @@ MapHack = function(config) {
 	this.latitude = 51.477222;
 	this.zoom = 10;
 
+	this.mapHackUi = null;
+
 	this.setConfig(config);
 
 }
@@ -81,20 +83,28 @@ MapHack.prototype.getLocation = function(query, module) {
 }
 
 MapHack.prototype.queryModule = function(module) {
-	var url = this._searchUrl+"?lat="+this.latitude+"&lon="+this.longitude+"&m="+module;
+	var url = this._searchUrl+"?lat="+this.latitude+"&lon="+this.longitude+"&m="+this.parseModuleName(module);
+	$.ajax(url, {context:this}).done(this.parseModule(module.name));
+}
+
+MapHack.prototype.parseModule = function(module) {
+	return function parseModuleData(data, textStatus) {
+		console.log(module);
+		console.log(data);
+	}
+}
+
+MapHack.prototype.queryModules = function() {
+	for(var i in this.modules) {
+		this.queryModule(this.modules[i]);
+	}
 }
 
 MapHack.prototype.setLocationAndQueryModules = function(locationData) {
 	var location = this.parsePosition(locationData);
 	if(location) {
 		this.setLocation(location);
-		this.modules;
-	}
-}
-
-MapHack.prototype.queryModules = function() {
-	for(i in this.modules) {
-
+		this.queryModules();
 	}
 }
 
@@ -148,4 +158,9 @@ MapHack.prototype.radiusToZoom = function(radius) {
 	if(metersPerPixel > 2.387) return 15;
 	if(metersPerPixel > 1.193) return 16;
 	if(metersPerPixel > 0.596) return 17;
+}
+
+
+MapHack.prototype.parseModuleName = function(module) {
+	return module.name.toLocaleLowerCase().replace(" ", "_");
 }
