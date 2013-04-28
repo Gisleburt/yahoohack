@@ -9,6 +9,7 @@ namespace Application\Model;
 
 
 use Zend\Http\Client;
+use Zend\Stdlib\Hydrator;
 
 class SearchExpedia {
 
@@ -31,14 +32,29 @@ class SearchExpedia {
         ));
 
         $response = $client->send();
-        $responseArray = json_decode($response->getBody());
 
         if ($response->isSuccess()) {
-            if(isset($responseArray->HotelListResponse->HotelList->HotelSummary))
-                return $responseArray->HotelListResponse->HotelList->HotelSummary;
-            else
-                return false;
+            $responseArray = json_decode($response->getBody());
 
+            if(isset($responseArray->HotelListResponse->HotelList->HotelSummary)){
+                $results =  $responseArray->HotelListResponse->HotelList->HotelSummary;
+                $resultArray = array();
+
+                foreach($results as $result){
+
+                    $resultObject = new SearchResult();
+                    $resultObject->name = $result->name;
+                    $resultObject->latitude = $result->latitude;
+                    $resultObject->longitude = $result->longitude;
+                    $resultObject->thumbnail = $result->thumbNailUrl;
+                    $resultObject->url = $result->deepLink;
+
+                    $resultArray[] = $resultObject;
+                }
+
+                return $resultArray;
+            }
+            return false;
         }
         else{
             throw new \Exception('Error - Response code: '.$response->getStatusCode());
