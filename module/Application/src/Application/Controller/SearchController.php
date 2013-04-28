@@ -49,7 +49,7 @@ class SearchController extends AbstractActionController {
                 }
 
             break;
-            case 'expedia':
+            case 'expedia_hotels':
                 $expediaSearch = new SearchExpedia($this->getServiceLocator());
 
                 if($resultArray = $expediaSearch->search($query)){
