@@ -48,7 +48,7 @@ class Search {
         $lat = round($lat, 4);
         $lon = round($lon, 4);
 
-        $select = "id,title";
+        $select = "*";
         $from = "flickr.photos.search";
         $where = "lat=\"{$lat}\" and lon=\"{$lon}\" AND api_key=\"{$api_key}\" limit 10";
 
@@ -60,10 +60,15 @@ class Search {
             $photos = $result = $responseArray->query->results->photo;
 
             $idString = '';
-            $photosArray = array();
+			/** @var SearchResult[] $results */
+			$results = array();
             foreach($photos as $photo){
-                $idString .= '"'.$photo->id.'",';
+                $results[$photo->id] = new SearchResult(array(
+					'name' => $photo->title,
+				));
+				$idString .= '"'.$photo->id.'",';
             }
+
             $idString = substr($idString, 0, -1);
 
             //second select for thumbnails
@@ -73,16 +78,25 @@ class Search {
 
             $response = $this->serviceYQL->executeQuery($select, $from, $where);
             $responseArray = json_decode($response);
+			//var_dump($responseArray->query->results);
+            if(isset($responseArray->query->results)){
 
-            if(isset($responseArray->query->results->size)){
-                $sizes = $result = $responseArray->query->results->size;
-               $i = 0;
-                foreach($photos as $photo){
-                    $sizes[$i]->title = $photo->title;
-                    $sizes[$i]->id = $photo->id;
+                //$sizes = $result = $responseArray->query->results->size;
+
+                foreach($responseArray->query->results->size as $photo){
+					foreach($results as $id => $result) {
+						if(strpos($photo->source, (string)$id) !== false) {
+							//var_dump($photo);
+							$result->setValues(array(
+								'url' => $photo->url,
+								'thumbnail' => $photo->source,
+							));
+						}
+					}
                 }
+				//var_dump($results); die;
 
-                return $sizes;
+                return $results;
             }
             else{
                 return false;

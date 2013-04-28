@@ -30,7 +30,7 @@ MapHackUi.prototype.setConfig = function(config) {
 MapHackUi.prototype.setModules = function() {
 	for(var i in this.mapHack.modules) {
 		var module = this.mapHack.modules[i];
-		this.addModule(module.name, module.icon);
+		this.addModule(this.mapHack.parseModuleName(module.name), module.icon);
 	}
 }
 
@@ -52,5 +52,6 @@ MapHackUi.prototype.getModule = function(name) {
 }
 
 MapHackUi.prototype.setResults =function(module_name, results) {
+	console.log(module_name);
 	console.log(results);
 }

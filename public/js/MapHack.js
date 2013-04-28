@@ -83,14 +83,13 @@ MapHack.prototype.getLocation = function(query, module) {
 }
 
 MapHack.prototype.queryModule = function(module) {
-	var url = this._searchUrl+"?lat="+this.latitude+"&lon="+this.longitude+"&m="+this.parseModuleName(module);
-	$.ajax(url, {context:this}).done(this.parseModule(module.name));
+	var url = this._searchUrl+"?lat="+this.latitude+"&lon="+this.longitude+"&m="+this.parseModuleName(module.name);
+	$.ajax(url, {context:this}).done(this.parseModule(this.parseModuleName(module.name)));
 }
 
 MapHack.prototype.parseModule = function(module) {
 	return function parseModuleData(data, textStatus) {
-		console.log(module);
-		console.log(data);
+		this.mapHackUi.setResults(module, data);
 	}
 }
 
@@ -161,6 +160,6 @@ MapHack.prototype.radiusToZoom = function(radius) {
 }
 
 
-MapHack.prototype.parseModuleName = function(module) {
-	return module.name.toLocaleLowerCase().replace(" ", "_");
+MapHack.prototype.parseModuleName = function(moduleName) {
+	return moduleName.toLocaleLowerCase().replace(" ", "_");
 }

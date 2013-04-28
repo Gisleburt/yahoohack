@@ -23,7 +23,6 @@
 	<script type="text/javascript" src="/js/MapHackModule.js"></script>
 	<script type="text/javascript" src="/js/MapHackUi.js"></script>
 	<script type="text/javascript" src="/js/history.js"></script>
-	<script type="text/javascript" src="/js/fakeResults.js"></script>
 	<script type="text/javascript">
 
 		var mapHackModules = [
@@ -66,6 +65,10 @@
                 $('#div_spinner').hide();
             });
         });
+
+		mapHack.setConfig({
+			mapHackUi: mapHackUi
+		})
 
 	</script>
 
