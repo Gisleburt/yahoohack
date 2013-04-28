@@ -47,7 +47,7 @@ class SearchExpedia {
                     $resultObject->name = $result->name;
                     $resultObject->latitude = $result->latitude;
                     $resultObject->longitude = $result->longitude;
-                    $resultObject->thumbnail = $result->thumbNailUrl;
+                    $resultObject->thumbnail = 'http://images.travelnow.com'.$result->thumbNailUrl;
                     $resultObject->url = $result->deepLink;
 
                     $resultArray[] = $resultObject;
