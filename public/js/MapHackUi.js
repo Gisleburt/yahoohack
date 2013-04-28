@@ -51,7 +51,25 @@ MapHackUi.prototype.getModule = function(name) {
 	return document.getElementById("module_"+name);
 }
 
-MapHackUi.prototype.setResults =function(module_name, results) {
-	console.log(module_name);
-	console.log(results);
+MapHackUi.prototype.setResults =function(module_name) {
+	this.clearResults(module_name);
+	var ulNode = document.createElement("ul");
+        ulNode.id = "module_"+module_name+"_results";
+
+	for(var i in this.mapHack.results[module_name]) {
+		var result = this.mapHack.results[module_name][i];
+		var liNode = document.createElement("li");
+		var textNode = document.createTextNode(result.name);
+		liNode.appendChild(textNode);
+		ulNode.appendChild(liNode);
+		this.getModule(module_name).appendChild(ulNode);
+	}
+	//console.log(results);
+}
+
+MapHackUi.prototype.clearResults = function(module_name) {
+	var node = document.getElementById("module_"+module_name+"_results");
+	if (node) 
+		node.parentNode.removeChild(node);
+	
 }

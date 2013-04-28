@@ -9,10 +9,12 @@ MapHack = function(config) {
 	this.mapName = 'map';
 	this.queryName = 'query';
 	this.modules = null;
+	this.results = {};
 
 	this._map = null;
 	this._searchUrl = '/search';
 
+	this.query = 'London';
 	this.longitude = -0.0;
 	this.latitude = 51.477222;
 	this.zoom = 10;
@@ -32,6 +34,7 @@ MapHack.prototype.setConfig = function(config) {
 		if(this.hasOwnProperty(property) && property.charAt(0) != '_')
 			this[property] = config[property];
 	}
+	this
 }
 
 /**
@@ -66,10 +69,8 @@ MapHack.prototype.search = function () {
  * @param query
  */
 MapHack.prototype.searchFor = function(query) {
-	var queryElement = document.getElementById(this.queryName);
-	if(query && query != queryElement.value)
-		queryElement.value = query;
-	this.getLocation(query, 'location');
+	this.query = query;
+	this.getLocation();
 }
 
 /**
@@ -77,25 +78,26 @@ MapHack.prototype.searchFor = function(query) {
  * @param query
  * @param module
  */
-MapHack.prototype.getLocation = function(query, module) {
-	var url = this._searchUrl+"?q="+query+"&m="+module;
+MapHack.prototype.getLocation = function() {
+	var url = this._searchUrl+"?q="+this.query+"&m=location";
 	$.ajax(url, {context:this}).done(this.setLocationAndQueryModules);
 }
 
 MapHack.prototype.queryModule = function(module) {
-	var url = this._searchUrl+"?lat="+this.latitude+"&lon="+this.longitude+"&m="+this.parseModuleName(module.name);
+	var url = this._searchUrl+"?q="+this.query+"&lat="+this.latitude+"&lon="+this.longitude+"&m="+this.parseModuleName(module.name);
 	$.ajax(url, {context:this}).done(this.parseModule(this.parseModuleName(module.name)));
 }
 
 MapHack.prototype.parseModule = function(module) {
 	return function parseModuleData(data, textStatus) {
-		this.mapHackUi.setResults(module, data);
+		this.results[module] = data.result;
+		this.mapHackUi.setResults(module);
 	}
 }
 
-MapHack.prototype.queryModules = function() {
+MapHack.prototype.queryModules = function(query) {
 	for(var i in this.modules) {
-		this.queryModule(this.modules[i]);
+		this.queryModule(query, this.modules[i]);
 	}
 }
 
@@ -131,6 +133,10 @@ MapHack.prototype.setLocation = function(location) {
 		);
 
 	this._map.setCenter (lonLat, this.zoom);
+}
+
+MapHack.prototype.addMarker = function(longitude, latitude) {
+
 }
 
 MapHack.prototype.radiusToZoom = function(radius) {
