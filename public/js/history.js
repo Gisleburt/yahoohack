@@ -4,7 +4,8 @@ window.addEventListener("popstate", function(e) {
 	if(queryVars.hasOwnProperty('q'))
 		query = decodeURIComponent(queryVars.q);
 	if(query && mapHack) {
-		document.getElementById('queryBox').value = query;
+		queryBox = document.getElementById('searchBar');
+		queryBox.value = query;
 		mapHack.searchFor(query);
 	}
 });
