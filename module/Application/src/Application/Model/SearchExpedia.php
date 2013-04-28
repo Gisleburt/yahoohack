@@ -20,7 +20,7 @@ class SearchExpedia {
         $this->serviceManager = $serviceManager;
     }
 
-    public function search($query){
+    public function search($query, $limit = 10){
 
         $config  = $this->serviceManager->get('Configuration');
         $key = $config['mmyql']['expedia_key'];
@@ -28,7 +28,8 @@ class SearchExpedia {
         $client = new Client('http://api.ean.com/ean-services/rs/hotel/v3/list');
         $client->setParameterGet(array(
             'destinationString'  => $query,
-            'apiKey'   => $key
+            'apiKey'   => $key,
+            'numberOfResults' => $limit,
         ));
 
         $response = $client->send();
