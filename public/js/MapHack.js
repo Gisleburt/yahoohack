@@ -136,16 +136,21 @@ MapHack.prototype.setLocation = function(location) {
 	this._map.setCenter (lonLat, this.zoom);
 }
 
-MapHack.prototype.addMarker = function(longitude, latitude) {
+MapHack.prototype.addMarker = function(longitude, latitude, iconLocation) {
         var lonLat = new OpenLayers.LonLat( longitude , latitude )
                 .transform(
                         new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
                         this._map.getProjectionObject() // to Spherical Mercator Projection
                 );
 
+	var size = new OpenLayers.Size(50,50);
+	var offset = new OpenLayers.Pixel(-(size.w/2), -size.h-13);
+	var icon = new OpenLayers.Icon(iconLocation, size, offset);
+
 	this._markers = new OpenLayers.Layer.Markers( "Markers" );
 	this._map.addLayer(this._markers);
 	this._markers.addMarker(new OpenLayers.Marker(lonLat));
+	//this._markers.addMarker(new OpenLayers.Marker(lonLat,icon));
 }
 
 MapHack.prototype.radiusToZoom = function(radius) {

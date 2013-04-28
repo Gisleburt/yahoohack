@@ -62,17 +62,22 @@ MapHackUi.prototype.setResults =function(module_name) {
 	for(var i in this.mapHack.results[module_name]) {
 		var result = this.mapHack.results[module_name][i];
 		var liNode = document.createElement("li");
+		var linkNode = document.createElement("a");
 		var textNode = document.createTextNode(result.name);
+		var icon = null;
 		if(result.thumbnail) {
 			var imageNode = document.createElement("img");
                 	imageNode.src = result.thumbnail;
 			imageNode.class = "thumbnail";
 			liNode.appendChild(imageNode);
+			icon = result.thumbnail;
 		}
+		linkNode.href = result.url;
 		liNode.appendChild(textNode);
-		ulNode.appendChild(liNode);
+		linkNode.appendChild(liNode);
+		ulNode.appendChild(linkNode);
 		this.getModule(module_name).appendChild(ulNode);
-		this.mapHack.addMarker(result.longitude, result.latitude);
+		this.mapHack.addMarker(result.longitude, result.latitude, icon);
 	}
 }
 
