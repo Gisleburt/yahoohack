@@ -54,10 +54,10 @@ class SearchExpedia {
                     $resultArray[] = $resultObject;
                     $i++;
 
-                    if($i == 10) return $resultArray;;
+                    if($i == 30) return $resultArray;
                 }
 
-
+                return $resultArray;
             }
             return false;
         }
