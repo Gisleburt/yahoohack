@@ -18,8 +18,8 @@ class SearchController extends AbstractActionController {
 
         $view = new JsonModel();
 
-
         $module = $this->params()->fromQuery('m');
+        $query = $this->params()->fromQuery('q');
 
         if(!$module){
             $view->setVariable('error','missing parameter module');
@@ -30,11 +30,6 @@ class SearchController extends AbstractActionController {
 
         switch($module){
             case 'location':
-                $query = $this->params()->fromQuery('q');
-                if(!$query){
-                    $view->setVariable('error','missing parameter q');
-                    return $view;
-                }
 
                 if($resultArray = $search->searchLocation($query)){
                         $view->setVariable('result',$resultArray);
@@ -44,14 +39,8 @@ class SearchController extends AbstractActionController {
                 }
             break;
             case 'flickr':
-                $lat = $this->params()->fromQuery('lat');
-                $lon = $this->params()->fromQuery('lon');
-                if(!$lat || !$lon){
-                    $view->setVariable('error','missing parameter lat or lon');
-                    return $view;
-                }
 
-                if($resultArray = $search->searchFlickr($lat, $lon)){
+                if($resultArray = $search->searchFlickr($query)){
                     $view->setVariable('result',$resultArray);
                 }
                 else{

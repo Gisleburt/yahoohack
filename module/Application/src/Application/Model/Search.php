@@ -12,6 +12,9 @@ class Search {
     private $serviceManager;
     private $serviceYQL;
 
+    /**
+     * @param $serviceManager
+     */
     public function __construct($serviceManager){
 
         $this->serviceManager = $serviceManager;
@@ -19,6 +22,10 @@ class Search {
 
     }
 
+    /**
+     * @param $query
+     * @return array|bool
+     */
     public function searchLocation($query){
 
         $select = "latitude, longitude, radius";
@@ -29,6 +36,7 @@ class Search {
         $responseArray = json_decode($response);
         if(isset($responseArray->query->results->Result)){
             $result = $responseArray->query->results->Result;
+            if(is_array($result)) $result = $result[0];
             $resultArray = array('coordinates' => array('latitude' => $result->latitude, 'longitude' => $result->longitude, 'radius' => $result->radius));
             return $resultArray;
         }
@@ -38,19 +46,22 @@ class Search {
 
     }
 
-    public function searchFlickr($lat, $lon){
+    /**
+     * @param $query
+     * @param int $limit
+     * @return SearchResult[]|bool
+     * @throws \Exception
+     */
+    public function searchFlickr($query, $limit = 10){
 
         $config  = $this->serviceManager->get('Configuration');
         $api_key =  $config['mmyql']['flickr_key'];
 
         if(!$api_key) throw new \Exception('missing api key');
 
-        $lat = round($lat, 4);
-        $lon = round($lon, 4);
-
         $select = "*";
         $from = "flickr.photos.search";
-        $where = "lat=\"{$lat}\" and lon=\"{$lon}\" AND api_key=\"{$api_key}\" limit 10";
+        $where = "has_geo=\"true\" and text=\"{$query}\"  AND api_key=\"{$api_key}\" limit {$limit}";
 
         //to get titles and IDs
         $response = $this->serviceYQL->executeQuery($select, $from, $where);
