@@ -3,7 +3,7 @@
 {% block content %}
 
 	<form id="queryBox">
-		<input id="query" type="text" name="query" placeholder="Search" /><button type="submit" onclick='mapHack.search(); return false;'>GO</button>
+		<input id="query" type="text" name="query" placeholder="Search" /><button id="searchBar" type="submit" onclick='mapHack.search(); return false;'>GO</button>
 	</form>
 
     <div id="div_spinner">
@@ -52,6 +52,27 @@
 
 		mapHackUi.setModules();
 
+		function hoverOpacity() {
+			$('#queryBox').mouseover(function() {
+				$(this).stop(true).animate({opacity: 1}, 500);
+			});
+			$('#queryBox').mouseout(function() {
+				$(this).stop(true).animate({opacity: 0.5}, 500);
+			});
+			 $('#queryBox').animate({opacity: 0.5}, 500);
+			
+                        $('#resultsBox').mouseover(function() {
+                                $(this).stop(true).animate({opacity: 1}, 500);
+                        });
+                        $('#resultsBox').mouseout(function() {
+                                $(this).stop(true).animate({opacity: 0.5}, 500);
+                        });
+			 $('#resultsBox').animate({opacity: 0.5}, 500);
+
+		}
+
+		hoverOpacity();
+
         $(document).ready(function () {
             $('#div_spinner').hide();
 
@@ -68,6 +89,9 @@
             $(document).ajaxStop(function() {
                 $('#div_spinner').hide();
             });
+
+
+
         });
 
 		mapHack.setConfig({
