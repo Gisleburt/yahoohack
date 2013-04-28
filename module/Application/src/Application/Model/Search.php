@@ -106,7 +106,7 @@ class Search {
                 //third select for lat, lon, url
                 $select = "id,location,urls";
                 $from = "flickr.photos.info";
-                $where = "photo_id in ({$idString}) AND api_key=\"{$api_key}\" limit 10";
+                $where = "photo_id in ({$idString}) AND api_key=\"{$api_key}\" ";
 
                 $response = $this->serviceYQL->executeQuery($select, $from, $where);
                 $responseArray = json_decode($response);
