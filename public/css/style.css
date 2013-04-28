@@ -56,6 +56,8 @@ button, {
 	right: 0;
 	list-style: none;
 	padding: 0;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
 
 #resultsBox li {
@@ -64,6 +66,11 @@ button, {
 	font-family: sans-serif;
 	font-size: 25px;
 	vertical-align: middle;
+}
+
+#resultsBox li ul {
+	list-style: none;
+        padding: 0;
 }
 
 #resultsBox img {
@@ -76,7 +83,7 @@ button, {
 
 #queryBox input,
 #queryBox button {
-	position: relative;
+	position: absolute;
 	height: 50px;
 	font-weight: bold;
 	font-size:30px;
@@ -85,9 +92,8 @@ button, {
 
 
 #queryBox input {
-	position:fixed;
 	left: 50px;
-	right: 150px;
+	right: 100px;
 	padding-left: 15px;
 	border: 1px solid grey;
 }
@@ -97,7 +103,6 @@ button, {
 	width: 100px;
 	right:0;
 	background-color: white;
-	float: right;
 	text-align: center;
 }
 #div_spinner{

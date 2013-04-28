@@ -30,17 +30,19 @@ MapHackUi.prototype.setConfig = function(config) {
 MapHackUi.prototype.setModules = function() {
 	for(var i in this.mapHack.modules) {
 		var module = this.mapHack.modules[i];
-		this.addModule(this.mapHack.parseModuleName(module.name), module.icon);
+		this.addModule(module.name, module.icon);
 	}
 }
 
 MapHackUi.prototype.addModule = function(name, icon) {
+	var text = name;
+	var name = this.mapHack.parseModuleName(name);
 	if(!this.getModule(name)) {
 		var liNode = document.createElement("li");
 		liNode.id = "module_"+name;
 		var imageNode = document.createElement("img");
 		imageNode.src = "/img/"+icon;
-		var textNode = document.createTextNode(name);
+		var textNode = document.createTextNode(text);
 		liNode.appendChild(imageNode);
 		liNode.appendChild(textNode);
 		document.getElementById(this.resultsName).appendChild(liNode);
@@ -52,6 +54,7 @@ MapHackUi.prototype.getModule = function(name) {
 }
 
 MapHackUi.prototype.setResults =function(module_name) {
+	module_name = this.mapHack.parseModuleName(module_name);
 	this.clearResults(module_name);
 	var ulNode = document.createElement("ul");
         ulNode.id = "module_"+module_name+"_results";
@@ -60,11 +63,17 @@ MapHackUi.prototype.setResults =function(module_name) {
 		var result = this.mapHack.results[module_name][i];
 		var liNode = document.createElement("li");
 		var textNode = document.createTextNode(result.name);
+		if(result.thumbnail) {
+			var imageNode = document.createElement("img");
+                	imageNode.src = result.thumbnail;
+			imageNode.class = "thumbnail";
+			liNode.appendChild(imageNode);
+		}
 		liNode.appendChild(textNode);
 		ulNode.appendChild(liNode);
 		this.getModule(module_name).appendChild(ulNode);
+		this.mapHack.addMarker(result.longitude, result.latitude);
 	}
-	//console.log(results);
 }
 
 MapHackUi.prototype.clearResults = function(module_name) {

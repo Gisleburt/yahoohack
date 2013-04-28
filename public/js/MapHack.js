@@ -12,6 +12,7 @@ MapHack = function(config) {
 	this.results = {};
 
 	this._map = null;
+	this._markers = null;
 	this._searchUrl = '/search';
 
 	this.query = 'London';
@@ -97,7 +98,7 @@ MapHack.prototype.parseModule = function(module) {
 
 MapHack.prototype.queryModules = function(query) {
 	for(var i in this.modules) {
-		this.queryModule(query, this.modules[i]);
+		this.queryModule(this.modules[i]);
 	}
 }
 
@@ -136,7 +137,15 @@ MapHack.prototype.setLocation = function(location) {
 }
 
 MapHack.prototype.addMarker = function(longitude, latitude) {
+        var lonLat = new OpenLayers.LonLat( longitude , latitude )
+                .transform(
+                        new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+                        this._map.getProjectionObject() // to Spherical Mercator Projection
+                );
 
+	this._markers = new OpenLayers.Layer.Markers( "Markers" );
+	this._map.addLayer(this._markers);
+	this._markers.addMarker(new OpenLayers.Marker(lonLat));
 }
 
 MapHack.prototype.radiusToZoom = function(radius) {
