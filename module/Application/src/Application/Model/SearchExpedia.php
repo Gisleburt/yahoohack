@@ -41,6 +41,7 @@ class SearchExpedia {
                 $results =  $responseArray->HotelListResponse->HotelList->HotelSummary;
                 $resultArray = array();
 
+                $i = 0;
                 foreach($results as $result){
 
                     $resultObject = new SearchResult();
@@ -51,9 +52,12 @@ class SearchExpedia {
                     $resultObject->url = $result->deepLink;
 
                     $resultArray[] = $resultObject;
+                    $i++;
+
+                    if($i == 10) return $resultArray;;
                 }
 
-                return $resultArray;
+
             }
             return false;
         }
