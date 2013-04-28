@@ -52,7 +52,7 @@ class Search {
      * @return SearchResult[]|bool
      * @throws \Exception
      */
-    public function searchFlickr($query, $limit = 10){
+    public function searchFlickr($query, $limit = 30){
 
         $config  = $this->serviceManager->get('Configuration');
         $api_key =  $config['mmyql']['flickr_key'];
