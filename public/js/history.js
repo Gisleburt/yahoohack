@@ -3,8 +3,10 @@ window.addEventListener("popstate", function(e) {
 	var queryVars = getUrlVars();
 	if(queryVars.hasOwnProperty('q'))
 		query = decodeURIComponent(queryVars.q);
-	if(query && mapHack)
+	if(query && mapHack) {
+		document.getElementById('queryBox').value = query;
 		mapHack.searchFor(query);
+	}
 });
 
 function setHistory(location) {

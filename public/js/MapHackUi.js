@@ -77,7 +77,7 @@ MapHackUi.prototype.setResults =function(module_name) {
 		linkNode.appendChild(liNode);
 		ulNode.appendChild(linkNode);
 		this.getModule(module_name).appendChild(ulNode);
-		this.mapHack.addMarker(result.longitude, result.latitude, icon);
+		this.mapHack.addMarker(module_name, result.longitude, result.latitude, icon);
 	}
 }
 

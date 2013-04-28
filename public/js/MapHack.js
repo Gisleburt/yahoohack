@@ -12,7 +12,7 @@ MapHack = function(config) {
 	this.results = {};
 
 	this._map = null;
-	this._markers = null;
+	this._markers = {};
 	this._searchUrl = '/search';
 
 	this.query = 'London';
@@ -136,7 +136,7 @@ MapHack.prototype.setLocation = function(location) {
 	this._map.setCenter (lonLat, this.zoom);
 }
 
-MapHack.prototype.addMarker = function(longitude, latitude, iconLocation) {
+MapHack.prototype.addMarker = function(module, longitude, latitude, iconLocation) {
         var lonLat = new OpenLayers.LonLat( longitude , latitude )
                 .transform(
                         new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
@@ -147,9 +147,9 @@ MapHack.prototype.addMarker = function(longitude, latitude, iconLocation) {
 	var offset = new OpenLayers.Pixel(-(size.w/2), -size.h-13);
 	var icon = new OpenLayers.Icon(iconLocation, size, offset);
 
-	this._markers = new OpenLayers.Layer.Markers( "Markers" );
-	this._map.addLayer(this._markers);
-	this._markers.addMarker(new OpenLayers.Marker(lonLat));
+	this._markers[module] = new OpenLayers.Layer.Markers( module );
+	this._map.addLayer(this._markers[module]);
+	this._markers[module].addMarker(new OpenLayers.Marker(lonLat));
 	//this._markers.addMarker(new OpenLayers.Marker(lonLat,icon));
 }
 
