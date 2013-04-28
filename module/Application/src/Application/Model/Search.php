@@ -72,29 +72,46 @@ class Search {
             $idString = substr($idString, 0, -1);
 
             //second select for thumbnails
-            $select = "*";
+            $select = "source";
             $from = "flickr.photos.sizes";
-            $where = "photo_id in ({$idString}) AND api_key=\"{$api_key}\"  AND label=\"Thumbnail\" limit 10";
+            $where = "photo_id in ({$idString}) AND api_key=\"{$api_key}\"  AND label=\"Thumbnail\" ";
 
             $response = $this->serviceYQL->executeQuery($select, $from, $where);
             $responseArray = json_decode($response);
-			//var_dump($responseArray->query->results);
+
             if(isset($responseArray->query->results)){
 
-                //$sizes = $result = $responseArray->query->results->size;
-
                 foreach($responseArray->query->results->size as $photo){
-					foreach($results as $id => $result) {
+					foreach($results as $id => &$result) {
 						if(strpos($photo->source, (string)$id) !== false) {
 							//var_dump($photo);
 							$result->setValues(array(
-								'url' => $photo->url,
 								'thumbnail' => $photo->source,
 							));
 						}
 					}
                 }
-				//var_dump($results); die;
+
+                //third select for lat, lon, url
+                $select = "id,location,urls";
+                $from = "flickr.photos.info";
+                $where = "photo_id in ({$idString}) AND api_key=\"{$api_key}\" limit 10";
+
+                $response = $this->serviceYQL->executeQuery($select, $from, $where);
+                $responseArray = json_decode($response);
+
+                if(isset($responseArray->query->results)){
+
+                    foreach($responseArray->query->results->photo as $photo){
+                        if(isset($results[$photo->id])){
+                            $results[$photo->id]->setValues(array(
+                                'latitude' => $photo->location->latitude,
+                                'longitude' => $photo->location->longitude,
+                                'url' => (isset($photo->urls->url) ? $photo->urls->url->content : ''),
+                            ));
+                        }
+                    }
+                }
 
                 return $results;
             }
