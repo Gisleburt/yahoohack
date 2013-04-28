@@ -9,6 +9,7 @@ namespace Application\Controller;
 
 
 use Application\Model\Search;
+use Application\Model\SearchExpedia;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 
@@ -41,6 +42,17 @@ class SearchController extends AbstractActionController {
             case 'flickr':
 
                 if($resultArray = $search->searchFlickr($query)){
+                    $view->setVariable('result',$resultArray);
+                }
+                else{
+                    $view->setVariable('error','no data found');
+                }
+
+            break;
+            case 'expedia':
+                $expediaSearch = new SearchExpedia($this->getServiceLocator());
+
+                if($resultArray = $expediaSearch->search($query)){
                     $view->setVariable('result',$resultArray);
                 }
                 else{
