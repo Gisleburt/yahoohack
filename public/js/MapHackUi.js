@@ -60,11 +60,17 @@ MapHackUi.prototype.setResults =function(module_name) {
 		var result = this.mapHack.results[module_name][i];
 		var liNode = document.createElement("li");
 		var textNode = document.createTextNode(result.name);
+		if(result.thumbnail) {
+			var imageNode = document.createElement("img");
+                	imageNode.src = result.thumbnail;
+			imageNode.class = "thumbnail";
+			liNode.appendChild(imageNode);
+		}
 		liNode.appendChild(textNode);
 		ulNode.appendChild(liNode);
 		this.getModule(module_name).appendChild(ulNode);
+		this.mapHack.addMarker(result.longitude, result.latitude);
 	}
-	//console.log(results);
 }
 
 MapHackUi.prototype.clearResults = function(module_name) {
